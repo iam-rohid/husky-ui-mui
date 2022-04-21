@@ -1,5 +1,6 @@
 import { Box, Drawer, Container, Theme, useMediaQuery } from "@mui/material";
 import { ReactNode, useEffect, useState } from "react";
+import useKeyboard from "../../hooks/use-keyboard";
 import { grey } from "../../themes";
 import DashboardHeader from "./dashboard-header";
 import DashboardSidebar from "./dashboard-sidebar";
@@ -19,6 +20,14 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       setShowSidebarOnMobile(false);
     }
   }, [isMobile, showSidebarOnMobile]);
+
+  useKeyboard("/", {
+    metaKey: true,
+    onKeyDown: (e) => {
+      e.preventDefault();
+      setSidebarCompact(!sidebarCompact);
+    },
+  });
 
   return (
     <>

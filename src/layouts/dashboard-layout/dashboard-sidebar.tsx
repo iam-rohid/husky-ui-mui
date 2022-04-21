@@ -29,14 +29,13 @@ export const DashboardSidebar = ({ compact }: DashboardSidebarProps) => {
   return (
     <Paper
       component="aside"
-      sx={(theme) => ({
+      sx={{
         width: "100%",
         height: "100%",
         overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
         borderRadius: 0,
-      })}
+        overflowY: "auto",
+      }}
     >
       <Box
         sx={(theme) => ({
@@ -48,6 +47,8 @@ export const DashboardSidebar = ({ compact }: DashboardSidebarProps) => {
           justifyContent: compact ? "center" : "flex-start",
           paddingInline: theme.spacing(4),
           zIndex: 10,
+          position: "sticky",
+          top: 0,
         })}
       >
         {compact ? (
@@ -57,7 +58,7 @@ export const DashboardSidebar = ({ compact }: DashboardSidebarProps) => {
               fontWeight: 800,
             })}
           >
-            L
+            HUI
           </Typography>
         ) : (
           <Typography
@@ -66,7 +67,7 @@ export const DashboardSidebar = ({ compact }: DashboardSidebarProps) => {
               fontWeight: 800,
             })}
           >
-            LOGO
+            HUSKY UI
           </Typography>
         )}
       </Box>

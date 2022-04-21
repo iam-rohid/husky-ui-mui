@@ -5,6 +5,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { createContext, ReactNode, useContext, useMemo } from "react";
+import useKeyboard from "../hooks/use-keyboard";
 import useLocalstorage from "../hooks/use-localstorage";
 import { getTheme } from "../themes";
 export type ColorScheme = "light" | "dark" | "system";
@@ -38,6 +39,20 @@ const ColorScehmeProvider = ({ children }: ColorScehmeProviderProps) => {
       return getTheme(prefersDarkMode ? "dark" : "light");
     }
   }, [colorScheme, prefersDarkMode]);
+
+  useKeyboard("b", {
+    metaKey: true,
+    onKeyDown: (e) => {
+      e.preventDefault();
+      setColorScheme(
+        colorScheme === "light"
+          ? "dark"
+          : colorScheme === "dark"
+          ? "system"
+          : "light"
+      );
+    },
+  });
 
   return (
     <ColorSchemeContext.Provider value={{ colorScheme, setColorScheme }}>
