@@ -1,4 +1,9 @@
-import { CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
+import {
+  CssBaseline,
+  GlobalStyles,
+  ThemeProvider,
+  useMediaQuery,
+} from "@mui/material";
 import { createContext, ReactNode, useContext, useMemo } from "react";
 import useLocalstorage from "../hooks/use-localstorage";
 import { getTheme } from "../themes";
@@ -38,6 +43,13 @@ const ColorScehmeProvider = ({ children }: ColorScehmeProviderProps) => {
     <ColorSchemeContext.Provider value={{ colorScheme, setColorScheme }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <GlobalStyles
+          styles={(theme) => ({
+            ":root": {
+              colorScheme: theme.palette.mode,
+            },
+          })}
+        />
         {children}
       </ThemeProvider>
     </ColorSchemeContext.Provider>

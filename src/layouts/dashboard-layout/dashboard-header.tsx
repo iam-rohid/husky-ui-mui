@@ -2,21 +2,31 @@ import {
   Computer,
   DarkMode,
   LightMode,
-  Menu,
+  Logout,
+  Menu as MenuIcon,
   Notifications,
   Person,
+  Search,
+  Settings,
 } from "@mui/icons-material";
 import {
   alpha,
   Box,
   Container,
   IconButton,
+  InputBase,
+  MenuItem,
   Theme,
   Typography,
   useMediaQuery,
+  Menu,
+  ListItemIcon,
+  Divider,
+  ListItemText,
 } from "@mui/material";
-import { Fragment } from "react";
+import { useState, MouseEvent, useMemo } from "react";
 import { useColorScheme } from "../../context/color-scheme";
+import { grey } from "../../themes";
 
 export type DashboardHeaderProps = {
   title: string;
@@ -37,40 +47,192 @@ export const DashboardHeader = ({
     theme.breakpoints.down("md")
   );
   const { colorScheme, setColorScheme } = useColorScheme();
+  const [menuButtonAnchorEl, setMenuButtonAnchorEl] =
+    useState<HTMLElement | null>(null);
+  const [userMenuButtonAnchorEl, setUserMenuButtonAnchorEl] =
+    useState<HTMLElement | null>(null);
+
+  const colorSchemeMenuOpen = useMemo(
+    () => Boolean(menuButtonAnchorEl),
+    [menuButtonAnchorEl]
+  );
+  const userMenuOpen = useMemo(
+    () => Boolean(userMenuButtonAnchorEl),
+    [userMenuButtonAnchorEl]
+  );
+
+  const handleColorSchemeMenuButtonClick = (
+    e: MouseEvent<HTMLButtonElement>
+  ) => {
+    setMenuButtonAnchorEl(e.currentTarget);
+  };
+  const handleColorSchemeMenuClose = () => {
+    setMenuButtonAnchorEl(null);
+  };
+  const handleUserMenuButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+    setUserMenuButtonAnchorEl(e.currentTarget);
+  };
+  const handleUserMenuClose = () => {
+    setUserMenuButtonAnchorEl(null);
+  };
 
   const themeToggleButton = (
-    <IconButton
-      size="large"
-      onClick={() => {
-        if (colorScheme === "light") {
-          setColorScheme("dark");
-        } else if (colorScheme === "dark") {
-          setColorScheme("system");
-        } else {
-          setColorScheme("light");
-        }
+    <>
+      <IconButton onClick={handleColorSchemeMenuButtonClick}>
+        {colorScheme === "light" ? (
+          <LightMode />
+        ) : colorScheme === "dark" ? (
+          <DarkMode />
+        ) : (
+          <Computer />
+        )}
+      </IconButton>
+      <Menu
+        anchorEl={menuButtonAnchorEl}
+        open={colorSchemeMenuOpen}
+        onClose={handleColorSchemeMenuClose}
+      >
+        <MenuItem
+          onClick={() => {
+            setColorScheme("light");
+            handleColorSchemeMenuClose();
+          }}
+        >
+          <ListItemIcon>
+            <LightMode />
+          </ListItemIcon>
+          Light
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setColorScheme("dark");
+            handleColorSchemeMenuClose();
+          }}
+        >
+          <ListItemIcon>
+            <DarkMode />
+          </ListItemIcon>
+          Dark
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setColorScheme("system");
+            handleColorSchemeMenuClose();
+          }}
+        >
+          <ListItemIcon>
+            <Computer />
+          </ListItemIcon>
+          System
+        </MenuItem>
+      </Menu>
+    </>
+  );
+  const userMenuButton = (
+    <>
+      <IconButton onClick={handleUserMenuButtonClick}>
+        <Person />
+      </IconButton>
+      <Menu
+        anchorEl={userMenuButtonAnchorEl}
+        open={userMenuOpen}
+        onClose={handleUserMenuClose}
+        MenuListProps={{
+          sx: (theme) => ({
+            minWidth: theme.spacing(44),
+          }),
+        }}
+      >
+        <MenuItem
+          onClick={() => {
+            handleUserMenuClose();
+          }}
+        >
+          <ListItemIcon>
+            <Person />
+          </ListItemIcon>
+          Profile
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleUserMenuClose();
+          }}
+        >
+          <ListItemIcon>
+            <Settings />
+          </ListItemIcon>
+          Settings
+        </MenuItem>
+        <Divider />
+        <MenuItem
+          onClick={() => {
+            handleUserMenuClose();
+          }}
+        >
+          <ListItemIcon>
+            <Logout />
+          </ListItemIcon>
+          <ListItemText>Logout</ListItemText>
+        </MenuItem>
+      </Menu>
+    </>
+  );
+
+  const searchBar = isMobile ? (
+    <IconButton>
+      <Search />
+    </IconButton>
+  ) : (
+    <Box
+      sx={{
+        position: "relative",
       }}
     >
-      {colorScheme === "light" ? (
-        <LightMode />
-      ) : colorScheme === "dark" ? (
-        <DarkMode />
-      ) : (
-        <Computer />
-      )}
-    </IconButton>
+      <label htmlFor="search-input">
+        <Search
+          sx={(theme) => ({
+            position: "absolute",
+            left: theme.spacing(2),
+            zIndex: 1,
+            top: "50%",
+            transform: "translateY(-50%)",
+            color: theme.palette.mode === "light" ? grey[500] : grey[400],
+          })}
+        />
+      </label>
+      <InputBase
+        id="search-input"
+        placeholder="Search..."
+        inputProps={{}}
+        sx={(theme) => ({
+          bgcolor: theme.palette.mode === "light" ? grey[100] : grey[800],
+          "&:focus-within": {
+            boxShadow: `0 0 0 2px ${
+              theme.palette.mode === "light" ? grey[200] : grey[700]
+            }`,
+          },
+          "& input::placeholder": {
+            color: theme.palette.mode === "light" ? grey[500] : grey[400],
+            opacity: 1,
+          },
+          paddingRight: theme.spacing(4),
+          paddingLeft: theme.spacing(10),
+          height: theme.spacing(9),
+          borderRadius: Number(theme.shape.borderRadius) * 2,
+        })}
+      />
+    </Box>
   );
 
   const actions = (
-    <Fragment>
-      <IconButton size="large">
+    <>
+      {searchBar}
+      <IconButton>
         <Notifications />
       </IconButton>
       {themeToggleButton}
-      <IconButton size="large">
-        <Person />
-      </IconButton>
-    </Fragment>
+      {userMenuButton}
+    </>
   );
 
   return (
@@ -93,11 +255,10 @@ export const DashboardHeader = ({
           alignItems: "center",
           justifyContent: "flex-start",
           height: theme.spacing(14),
-          gap: theme.spacing(2),
+          gap: 2,
         })}
       >
         <IconButton
-          size="large"
           onClick={() => {
             if (isMobile) {
               setShowSidbarOnMobile(!showSidbarOnMobile);
@@ -106,7 +267,7 @@ export const DashboardHeader = ({
             }
           }}
         >
-          <Menu />
+          <MenuIcon />
         </IconButton>
         <Typography
           variant="h1"
@@ -114,6 +275,7 @@ export const DashboardHeader = ({
             fontSize: theme.spacing(5),
             fontWeight: "500",
             flex: 1,
+            pr: 2,
           })}
         >
           {title}

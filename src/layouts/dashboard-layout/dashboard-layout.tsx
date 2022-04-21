@@ -36,6 +36,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               left: 0,
               top: 0,
               bottom: 0,
+              width: sidebarCompact ? theme.spacing(16) : theme.spacing(64),
               zIndex: theme.zIndex.drawer - 10,
             })}
           >
