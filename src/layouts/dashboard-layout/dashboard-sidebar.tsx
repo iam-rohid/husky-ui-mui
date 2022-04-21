@@ -1,10 +1,10 @@
 import {
-  Drafts,
+  Analytics,
+  Category,
+  CircleOutlined,
+  Dashboard,
   ExpandLess,
   ExpandMore,
-  Inbox,
-  Send,
-  StarBorder,
 } from "@mui/icons-material";
 import {
   alpha,
@@ -15,25 +15,27 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Paper,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { grey } from "../../themes";
+import Link from "next/link";
+import React, { useState } from "react";
 
 export type DashboardSidebarProps = {
   compact?: boolean;
 };
 export const DashboardSidebar = ({ compact }: DashboardSidebarProps) => {
+  const [openList, setOpenList] = useState<string | null>(null);
   return (
-    <Box
+    <Paper
       component="aside"
       sx={(theme) => ({
         width: "100%",
         height: "100%",
-        bgcolor: theme.palette.background.paper,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
+        borderRadius: 0,
       })}
     >
       <Box
@@ -68,40 +70,73 @@ export const DashboardSidebar = ({ compact }: DashboardSidebarProps) => {
           </Typography>
         )}
       </Box>
-      <List sx={{ width: "100%" }} component="nav">
-        <ListItemButton selected>
-          <ListItemIcon>
-            <Send />
-          </ListItemIcon>
-          <ListItemText primary="Sent maila sdfasdjf lasdjl" />
-        </ListItemButton>
-        <ListItemButton>
-          <ListItemIcon>
-            <Drafts />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
-        </ListItemButton>
-        <ListItemButton>
-          <ListItemIcon>
-            <Inbox />
-          </ListItemIcon>
-          <ListItemText primary="Inbox" />
-          {!compact && (true ? <ExpandLess /> : <ExpandMore />)}
-        </ListItemButton>
+
+      <List sx={{ width: "100%" }}>
+        <ListItem disablePadding>
+          <Link href={"/"} passHref>
+            <ListItemButton component="a">
+              <ListItemIcon>
+                <Dashboard />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <Link href={"/analytics"} passHref>
+            <ListItemButton component="a">
+              <ListItemIcon>
+                <Analytics />
+              </ListItemIcon>
+              <ListItemText primary="Analytics" />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton
+            component="button"
+            onClick={() => setOpenList(openList ? null : "components")}
+          >
+            <ListItemIcon>
+              <Category />
+            </ListItemIcon>
+            <ListItemText primary="Components" />
+            {!compact &&
+              (openList === "components" ? <ExpandLess /> : <ExpandMore />)}
+          </ListItemButton>
+        </ListItem>
+
         {!compact && (
-          <Collapse in={true} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 10 }}>
-                <ListItemIcon>
-                  <StarBorder />
-                </ListItemIcon>
-                <ListItemText primary="Starred" />
-              </ListItemButton>
+          <Collapse in={openList === "components"} timeout="auto" unmountOnExit>
+            <List disablePadding>
+              <ListItem disablePadding>
+                <Link href={`components/buttons`} passHref>
+                  <ListItemButton component="a" sx={{ pl: 10 }}>
+                    <ListItemIcon>
+                      <CircleOutlined />
+                    </ListItemIcon>
+                    <ListItemText primary="Buttons" />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+
+              <ListItem disablePadding>
+                <Link href={`components/icon-buttons`} passHref>
+                  <ListItemButton component="a" sx={{ pl: 10 }}>
+                    <ListItemIcon>
+                      <CircleOutlined />
+                    </ListItemIcon>
+                    <ListItemText primary="Icon Buttons" />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
             </List>
           </Collapse>
         )}
       </List>
-    </Box>
+    </Paper>
   );
 };
 

@@ -234,7 +234,7 @@ export const DashboardHeader = ({
           paddingRight: theme.spacing(4),
           paddingLeft: theme.spacing(10),
           height: theme.spacing(9),
-          borderRadius: Number(theme.shape.borderRadius) * 2,
+          borderRadius: `${theme.shape.borderRadius}px`,
         })}
       />
     </Box>
@@ -258,45 +258,46 @@ export const DashboardHeader = ({
         position: "sticky",
         top: 0,
         zIndex: theme.zIndex.appBar,
-        bgcolor: alpha(theme.palette.background.default, 0.75),
+        bgcolor: alpha(theme.palette.background.default, 0.5),
         backdropFilter: "blur(5px)",
         boxShadow: `0 1px 0 0 ${theme.palette.divider}`,
       })}
     >
-      <Container
-        maxWidth="xl"
-        sx={(theme) => ({
-          display: "flex",
-          flexdirection: "row",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          height: theme.spacing(14),
-          gap: 2,
-        })}
-      >
-        <IconButton
-          onClick={() => {
-            if (isMobile) {
-              setShowSidbarOnMobile(!showSidbarOnMobile);
-            } else {
-              setSidebarCompact(!compactSidebar);
-            }
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography
-          variant="h1"
+      <Container maxWidth="xl">
+        <Box
           sx={(theme) => ({
-            fontSize: theme.spacing(5),
-            fontWeight: "500",
-            flex: 1,
-            pr: 2,
+            display: "flex",
+            flexdirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            height: theme.spacing(14),
+            gap: 2,
           })}
         >
-          {title}
-        </Typography>
-        {actions}
+          <IconButton
+            onClick={() => {
+              if (isMobile) {
+                setShowSidbarOnMobile(!showSidbarOnMobile);
+              } else {
+                setSidebarCompact(!compactSidebar);
+              }
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            variant="h1"
+            sx={(theme) => ({
+              fontSize: theme.spacing(5),
+              fontWeight: "500",
+              flex: 1,
+              pr: 2,
+            })}
+          >
+            {title}
+          </Typography>
+          {actions}
+        </Box>
       </Container>
     </Box>
   );

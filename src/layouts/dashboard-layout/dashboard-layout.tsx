@@ -1,5 +1,6 @@
 import { Box, Drawer, Container, Theme, useMediaQuery } from "@mui/material";
 import { ReactNode, useEffect, useState } from "react";
+import { grey } from "../../themes";
 import DashboardHeader from "./dashboard-header";
 import DashboardSidebar from "./dashboard-sidebar";
 
@@ -29,6 +30,9 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           sx: (theme) => ({
             width: "80%",
             maxWidth: theme.spacing(82),
+            boxShadow: `1px 0 0 0 ${
+              theme.palette.mode === "light" ? grey[200] : grey[700]
+            }`,
           }),
         }}
       >

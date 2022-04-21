@@ -49,7 +49,7 @@ export const getTheme = (mode: PaletteMode) =>
               A400: "#94a3b8",
               A700: "#334155",
             },
-            divider: grey[100],
+            divider: alpha(grey[200], 0.6),
             background: {
               default: grey[50],
               paper: "#fff",
@@ -65,7 +65,7 @@ export const getTheme = (mode: PaletteMode) =>
             error: {
               main: red.A400,
             },
-            divider: grey[800],
+            divider: alpha(grey[700], 0.6),
             background: {
               default: grey[900],
               paper: grey[800],
@@ -105,7 +105,7 @@ export const getTheme = (mode: PaletteMode) =>
           root: ({ theme }) => ({
             "&:focus-visible, &:hover": {
               backgroundColor:
-                theme.palette.mode === "light" ? grey[100] : grey[800],
+                theme.palette.mode === "light" ? grey[100] : grey[700],
             },
           }),
         },
@@ -177,11 +177,10 @@ export const getTheme = (mode: PaletteMode) =>
       MuiPopover: {
         styleOverrides: {
           paper: ({ theme }) => ({
-            borderRadius: Number(theme.shape.borderRadius) * 3,
             backgroundImage: "none",
-            backgroundColor: theme.palette.background.default,
+            backgroundColor: theme.palette.background.paper,
             boxShadow: `0 0 0 1px ${
-              theme.palette.mode === "light" ? grey[200] : grey[800]
+              theme.palette.divider
             }, 0 4px 32px 0px ${alpha(
               "#000",
               theme.palette.mode === "dark" ? 0.5 : 0.2
@@ -189,9 +188,27 @@ export const getTheme = (mode: PaletteMode) =>
           }),
         },
       },
+      MuiPaper: {
+        defaultProps: {
+          elevation: 0,
+        },
+        styleOverrides: {
+          root: ({ theme }) => ({
+            boxShadow: `0 0 0 1px ${theme.palette.divider}`,
+            transition: "none",
+          }),
+        },
+      },
+      MuiContainer: {
+        defaultProps: {
+          sx: {
+            px: [4, 6],
+          },
+        },
+      },
     },
     spacing: 4,
     shape: {
-      borderRadius: 2,
+      borderRadius: 8,
     },
   });
