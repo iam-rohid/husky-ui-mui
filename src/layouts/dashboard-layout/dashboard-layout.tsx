@@ -25,6 +25,12 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         anchor={"left"}
         open={showSidebarOnMobile}
         onClose={() => setShowSidebarOnMobile(false)}
+        PaperProps={{
+          sx: (theme) => ({
+            width: "80%",
+            maxWidth: theme.spacing(82),
+          }),
+        }}
       >
         <DashboardSidebar />
       </Drawer>

@@ -1,11 +1,4 @@
-import {
-  alpha,
-  Color,
-  createTheme,
-  darken,
-  lighten,
-  PaletteMode,
-} from "@mui/material";
+import { alpha, Color, createTheme, PaletteMode } from "@mui/material";
 import { red } from "@mui/material/colors";
 
 export const grey: Color = {
@@ -58,7 +51,7 @@ export const getTheme = (mode: PaletteMode) =>
             },
             divider: grey[100],
             background: {
-              default: "#fff",
+              default: grey[50],
               paper: "#fff",
             },
           }
@@ -75,7 +68,7 @@ export const getTheme = (mode: PaletteMode) =>
             divider: grey[800],
             background: {
               default: grey[900],
-              paper: grey[900],
+              paper: grey[800],
             },
           }),
     },
@@ -123,12 +116,22 @@ export const getTheme = (mode: PaletteMode) =>
         },
         styleOverrides: {
           root: ({ theme }) => ({
-            padding: theme.spacing(2, 5),
+            padding: theme.spacing(1.5, 5),
             gap: theme.spacing(5),
+            transition: "none",
             "&:focus-visible, &:hover": {
+              backgroundColor: alpha(
+                theme.palette.mode === "light" ? grey[100] : grey[700],
+                0.5
+              ),
+            },
+            "&.Mui-selected": {
               backgroundColor:
-                theme.palette.mode === "light" ? grey[100] : grey[800],
-              color: theme.palette.mode === "light" ? grey[900] : grey[50],
+                theme.palette.mode === "light" ? grey[100] : grey[700],
+              "&:focus-visible, &:hover": {
+                backgroundColor:
+                  theme.palette.mode === "light" ? grey[100] : grey[700],
+              },
             },
           }),
         },
@@ -151,6 +154,7 @@ export const getTheme = (mode: PaletteMode) =>
           modal: {
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             backdropFilter: "blur(5px)",
+            transition: "background-color 0.3s, backdrop-filter 0.3s",
           },
         },
       },
@@ -176,9 +180,9 @@ export const getTheme = (mode: PaletteMode) =>
             borderRadius: Number(theme.shape.borderRadius) * 3,
             backgroundImage: "none",
             backgroundColor: theme.palette.background.default,
-            border: "1px solid",
-            borderColor: theme.palette.divider,
-            boxShadow: `0 4px 32px 0px ${alpha(
+            boxShadow: `0 0 0 1px ${
+              theme.palette.mode === "light" ? grey[200] : grey[800]
+            }, 0 4px 32px 0px ${alpha(
               "#000",
               theme.palette.mode === "dark" ? 0.5 : 0.2
             )}`,

@@ -88,6 +88,14 @@ export const DashboardHeader = ({
         )}
       </IconButton>
       <Menu
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
         anchorEl={menuButtonAnchorEl}
         open={colorSchemeMenuOpen}
         onClose={handleColorSchemeMenuClose}
@@ -134,6 +142,14 @@ export const DashboardHeader = ({
         <Person />
       </IconButton>
       <Menu
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
         anchorEl={userMenuButtonAnchorEl}
         open={userMenuOpen}
         onClose={handleUserMenuClose}

@@ -11,12 +11,14 @@ import {
   Box,
   Collapse,
   List,
+  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Typography,
 } from "@mui/material";
 import React from "react";
+import { grey } from "../../themes";
 
 export type DashboardSidebarProps = {
   compact?: boolean;
@@ -28,8 +30,7 @@ export const DashboardSidebar = ({ compact }: DashboardSidebarProps) => {
       sx={(theme) => ({
         width: "100%",
         height: "100%",
-        bgcolor: theme.palette.background.default,
-        boxShadow: `1px 0 0 0 ${theme.palette.divider}`,
+        bgcolor: theme.palette.background.paper,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
@@ -37,7 +38,7 @@ export const DashboardSidebar = ({ compact }: DashboardSidebarProps) => {
     >
       <Box
         sx={(theme) => ({
-          bgcolor: alpha(theme.palette.background.default, 0.75),
+          bgcolor: alpha(theme.palette.background.paper, 0.75),
           backdropFilter: "blur(5px)",
           height: theme.spacing(14),
           display: "flex",
@@ -68,31 +69,19 @@ export const DashboardSidebar = ({ compact }: DashboardSidebarProps) => {
         )}
       </Box>
       <List sx={{ width: "100%" }} component="nav">
-        <ListItemButton
-          sx={{
-            height: compact ? "48px" : "auto",
-          }}
-        >
+        <ListItemButton selected>
           <ListItemIcon>
             <Send />
           </ListItemIcon>
           <ListItemText primary="Sent maila sdfasdjf lasdjl" />
         </ListItemButton>
-        <ListItemButton
-          sx={{
-            height: compact ? "48px" : "auto",
-          }}
-        >
+        <ListItemButton>
           <ListItemIcon>
             <Drafts />
           </ListItemIcon>
           <ListItemText primary="Drafts" />
         </ListItemButton>
-        <ListItemButton
-          sx={{
-            height: compact ? "48px" : "auto",
-          }}
-        >
+        <ListItemButton>
           <ListItemIcon>
             <Inbox />
           </ListItemIcon>
