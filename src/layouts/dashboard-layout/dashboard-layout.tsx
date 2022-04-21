@@ -28,21 +28,27 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       >
         <DashboardSidebar />
       </Drawer>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          width: "100%",
-          height: "100vh",
-          overflow: "hidden",
-        }}
-      >
-        {!isMobile && <DashboardSidebar compact={sidebarCompact} />}
+      <>
+        {!isMobile && (
+          <Box
+            sx={(theme) => ({
+              position: "fixed",
+              left: 0,
+              top: 0,
+              bottom: 0,
+              zIndex: theme.zIndex.drawer - 10,
+            })}
+          >
+            <DashboardSidebar compact={sidebarCompact} />
+          </Box>
+        )}
         <Box
           sx={(theme) => ({
-            flex: 1,
-            overflowY: "scroll",
-            bgcolor: theme.palette.background.default,
+            paddingLeft: isMobile
+              ? 0
+              : sidebarCompact
+              ? theme.spacing(16)
+              : theme.spacing(64),
           })}
         >
           <DashboardHeader
@@ -54,7 +60,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           />
           <Container maxWidth="xl">{children}</Container>
         </Box>
-      </Box>
+      </>
     </>
   );
 };

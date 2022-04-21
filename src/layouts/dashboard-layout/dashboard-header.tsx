@@ -41,7 +41,6 @@ export const DashboardHeader = ({
   const themeToggleButton = (
     <IconButton
       size="large"
-      edge="end"
       onClick={() => {
         if (colorScheme === "light") {
           setColorScheme("dark");
@@ -64,11 +63,11 @@ export const DashboardHeader = ({
 
   const actions = (
     <Fragment>
-      <IconButton size="large" edge="end">
+      <IconButton size="large">
         <Notifications />
       </IconButton>
       {themeToggleButton}
-      <IconButton size="large" edge="end">
+      <IconButton size="large">
         <Person />
       </IconButton>
     </Fragment>
@@ -82,7 +81,7 @@ export const DashboardHeader = ({
         top: 0,
         zIndex: theme.zIndex.appBar,
         bgcolor: alpha(theme.palette.background.default, 0.75),
-        backdropFilter: "blur(10px)",
+        backdropFilter: "blur(5px)",
         boxShadow: `0 1px 0 0 ${theme.palette.divider}`,
       })}
     >
@@ -106,7 +105,6 @@ export const DashboardHeader = ({
               setSidebarCompact(!compactSidebar);
             }
           }}
-          edge="start"
         >
           <Menu />
         </IconButton>
@@ -115,7 +113,7 @@ export const DashboardHeader = ({
           sx={(theme) => ({
             fontSize: theme.spacing(5),
             fontWeight: "500",
-            flexGrow: 1,
+            flex: 1,
           })}
         >
           {title}

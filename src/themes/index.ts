@@ -32,6 +32,7 @@ export const getTheme = (mode: PaletteMode) =>
             error: {
               main: red.A400,
             },
+            divider: "#1e293b",
             background: {
               default: "#0f172a",
               paper: "#0f172a",
