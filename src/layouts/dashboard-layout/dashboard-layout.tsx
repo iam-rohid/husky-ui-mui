@@ -2,7 +2,7 @@ import { Box, Drawer, Container, Theme, useMediaQuery } from "@mui/material";
 import { ReactNode, useEffect, useState } from "react";
 import useKeyboard from "../../hooks/use-keyboard";
 import useLocalstorage from "../../hooks/use-localstorage";
-import { grey } from "../../themes";
+import { grey } from "../../themes/colors";
 import DashboardHeader from "./dashboard-header";
 import DashboardSidebar from "./dashboard-sidebar";
 
@@ -50,9 +50,7 @@ export const DashboardLayout = ({
           sx: (theme) => ({
             width: "80%",
             maxWidth: theme.spacing(82),
-            boxShadow: `1px 0 0 0 ${
-              theme.palette.mode === "light" ? grey[200] : grey[700]
-            }`,
+            boxShadow: `1px 0 0 0 ${theme.palette.divider}`,
           }),
         }}
       >
@@ -68,6 +66,10 @@ export const DashboardLayout = ({
               bottom: 0,
               width: sidebarCompact ? theme.spacing(16) : theme.spacing(64),
               zIndex: theme.zIndex.drawer - 10,
+              transition: theme.transitions.create(["width"], {
+                duration: theme.transitions.duration.standard,
+                easing: theme.transitions.easing.easeInOut,
+              }),
             })}
           >
             <DashboardSidebar pageId={pageId} compact={sidebarCompact} />
@@ -80,6 +82,10 @@ export const DashboardLayout = ({
               : sidebarCompact
               ? theme.spacing(16)
               : theme.spacing(64),
+            transition: theme.transitions.create(["padding-left"], {
+              duration: theme.transitions.duration.standard,
+              easing: theme.transitions.easing.easeInOut,
+            }),
           })}
         >
           <DashboardHeader

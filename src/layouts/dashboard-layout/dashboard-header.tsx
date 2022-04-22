@@ -27,7 +27,7 @@ import {
 import { useState, MouseEvent, useMemo, useRef, useCallback } from "react";
 import { useColorScheme } from "../../context/color-scheme";
 import useKeyboard from "../../hooks/use-keyboard";
-import { grey } from "../../themes";
+import { grey } from "../../themes/colors";
 
 export type DashboardHeaderProps = {
   title: string;
@@ -208,7 +208,7 @@ export const DashboardHeader = ({
   );
 
   const searchBar = isMobile ? (
-    <IconButton edge="end">
+    <IconButton>
       <Search />
     </IconButton>
   ) : (
@@ -270,10 +270,10 @@ export const DashboardHeader = ({
   const actions = (
     <>
       {searchBar}
-      <IconButton edge="end">
+      <IconButton>
         <Notifications />
       </IconButton>
-      <IconButton onClick={handleColorSchemeMenuButtonClick} edge="end">
+      <IconButton onClick={handleColorSchemeMenuButtonClick}>
         {colorScheme === "light" ? (
           <LightMode />
         ) : colorScheme === "dark" ? (
@@ -282,7 +282,7 @@ export const DashboardHeader = ({
           <Computer />
         )}
       </IconButton>
-      <IconButton onClick={handleUserMenuButtonClick} edge="end">
+      <IconButton onClick={handleUserMenuButtonClick}>
         <Person />
       </IconButton>
       {colorSchemeMenu}
@@ -321,7 +321,6 @@ export const DashboardHeader = ({
                 setSidebarCompact(!compactSidebar);
               }
             }}
-            edge="start"
           >
             <MenuIcon />
           </IconButton>

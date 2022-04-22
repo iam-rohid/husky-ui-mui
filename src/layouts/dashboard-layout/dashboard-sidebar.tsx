@@ -1,8 +1,7 @@
+import { Fragment, useCallback, useEffect, useState, MouseEvent } from "react";
 import {
-  Analytics,
-  Category,
+  ChevronRight,
   CircleOutlined,
-  Dashboard,
   ExpandLess,
   ExpandMore,
 } from "@mui/icons-material";
@@ -16,139 +15,17 @@ import {
   ListItemIcon,
   ListItemText,
   Menu,
-  MenuItem,
   Paper,
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import React, { Fragment, useEffect, useState } from "react";
+import {
+  demo01Menu,
+  MenuGroupItemType,
+  MenuLinkItemType,
+} from "src/data/dashboard-menu";
+import { useRouter } from "next/router";
 
-const sidebarMenuList = [
-  {
-    id: "dashboard",
-    icon: <Dashboard />,
-    label: "Dashboard",
-    path: "/",
-  },
-  {
-    id: "analytics",
-    icon: <Analytics />,
-    label: "Analytics",
-    path: "/analytics",
-  },
-  {
-    id: "components",
-    icon: <Category />,
-    label: "Components",
-    path: "",
-    subMenu: [
-      {
-        id: "buttons",
-        icon: <CircleOutlined />,
-        label: "Buttons",
-        path: "/components/buttons",
-      },
-      {
-        id: "cards",
-        icon: <CircleOutlined />,
-        label: "Cards",
-        path: "/components/cards",
-      },
-      {
-        id: "chips",
-        icon: <CircleOutlined />,
-        label: "Chips",
-        path: "/components/chips",
-      },
-      {
-        id: "dialogs",
-        icon: <CircleOutlined />,
-        label: "Dialogs",
-        path: "/components/dialogs",
-      },
-      {
-        id: "panels",
-        icon: <CircleOutlined />,
-        label: "Expansion Panels",
-        path: "/components/expansion-panels",
-      },
-      {
-        id: "forms",
-        icon: <CircleOutlined />,
-        label: "Forms",
-        path: "/components/forms",
-      },
-      {
-        id: "icons",
-        icon: <CircleOutlined />,
-        label: "Icons",
-        path: "/components/icons",
-      },
-      {
-        id: "lists",
-        icon: <CircleOutlined />,
-        label: "Lists",
-        path: "/components/lists",
-      },
-      {
-        id: "menus",
-        icon: <CircleOutlined />,
-        label: "Menus",
-        path: "/components/menus",
-      },
-      {
-        id: "paper",
-        icon: <CircleOutlined />,
-        label: "Paper",
-        path: "/components/paper",
-      },
-      {
-        id: "progress",
-        icon: <CircleOutlined />,
-        label: "Progress",
-        path: "/components/progress",
-      },
-      {
-        id: "sliders",
-        icon: <CircleOutlined />,
-        label: "Sliders",
-        path: "/components/sliders",
-      },
-      {
-        id: "snackbars",
-        icon: <CircleOutlined />,
-        label: "Snackbars",
-        path: "/components/snackbars",
-      },
-      {
-        id: "tabs",
-        icon: <CircleOutlined />,
-        label: "Tabs",
-        path: "/components/tabs",
-      },
-    ],
-  },
-  {
-    id: "pages",
-    icon: <Category />,
-    label: "Pages",
-    path: "",
-    subMenu: [
-      {
-        id: "buttons",
-        icon: <CircleOutlined />,
-        label: "Buttons",
-        path: "/components/buttons",
-      },
-      {
-        id: "cards",
-        icon: <CircleOutlined />,
-        label: "Cards",
-        path: "/components/cards",
-      },
-    ],
-  },
-];
 export type DashboardSidebarProps = {
   compact?: boolean;
   pageId?: string;
@@ -158,11 +35,14 @@ export const DashboardSidebar = ({
   compact,
   pageId,
 }: DashboardSidebarProps) => {
-  const [openList, setOpenList] = useState<string | null>(null);
+  const [openLists, setOpenLists] = useState<string[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
-    setOpenList(null);
-  }, [compact]);
+    const routes = router.route.split("/").filter((r) => !!r);
+    setOpenLists([...routes]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Paper
@@ -182,102 +62,52 @@ export const DashboardSidebar = ({
           height: theme.spacing(14),
           display: "flex",
           alignItems: "center",
-          justifyContent: compact ? "center" : "flex-start",
-          paddingInline: theme.spacing(4),
+          justifyContent: "center",
           zIndex: 10,
           position: "sticky",
           top: 0,
         })}
       >
-        {compact ? (
-          <Typography
-            sx={(theme) => ({
-              fontSize: theme.spacing(6),
-              fontWeight: 800,
-            })}
-          >
-            HUI
-          </Typography>
-        ) : (
-          <Typography
-            sx={(theme) => ({
-              fontSize: theme.spacing(6),
-              fontWeight: 800,
-            })}
-          >
-            HUSKY UI
-          </Typography>
-        )}
+        <Typography
+          sx={(theme) => ({
+            fontSize: theme.spacing(6),
+            fontWeight: 800,
+            textTransform: "uppercase",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          })}
+        >
+          {compact ? "HUI" : "Husky UI"}
+        </Typography>
       </Box>
 
       <List sx={{ width: "100%" }}>
-        {sidebarMenuList.map((item, i) => (
+        {demo01Menu.map((item, i) => (
           <Fragment key={i}>
-            <ListItem disablePadding>
-              <Link href={item.path} passHref={!!item.path}>
-                <ListItemButton
-                  id={item.id}
-                  component={item.path ? "a" : "button"}
-                  selected={pageId === (item.id || "")}
-                  onClick={() => {
-                    if (item.subMenu) {
-                      setOpenList(openList === item.id ? null : item.id);
-                    }
-                  }}
-                >
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.label} />
-
-                  {!!item.subMenu &&
-                    (openList === item.id ? <ExpandLess /> : <ExpandMore />)}
-                </ListItemButton>
-              </Link>
-            </ListItem>
-            {!!item.subMenu && !compact && (
-              <Collapse in={openList === item.id} timeout="auto" unmountOnExit>
-                <List disablePadding>
-                  {item.subMenu.map((subItem, j) => (
-                    <ListItem disablePadding key={j}>
-                      <Link href={`components/buttons`} passHref>
-                        <ListItemButton component="a" sx={{ pl: 10 }}>
-                          <ListItemIcon>
-                            {subItem.icon || <CircleOutlined />}
-                          </ListItemIcon>
-                          <ListItemText primary={subItem.label} />
-                        </ListItemButton>
-                      </Link>
-                    </ListItem>
-                  ))}
-                </List>
-              </Collapse>
-            )}
-            {!!item.subMenu && compact && (
-              <Menu
-                open={openList === item.id}
-                onClose={() => setOpenList(null)}
-                anchorEl={document.getElementById(item.id)}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+            {item.__typename === "MenuGroupItem" ? (
+              <GroupItem
+                group={item}
+                isOpen={openLists.includes(item.id)}
+                onClick={() => {
+                  if (!compact) {
+                    setOpenLists(
+                      openLists.includes(item.id)
+                        ? [...openLists.filter((id) => id !== item.id)]
+                        : [...openLists, item.id]
+                    );
+                  }
                 }}
-                sx={{
-                  "& .MuiMenu-paper": {
-                    ml: 2,
-                  },
-                }}
-              >
-                {item.subMenu.map((subItem, j) => (
-                  <Link href={`components/buttons`} passHref key={j}>
-                    <MenuItem component="a">
-                      <ListItemIcon>
-                        {subItem.icon || <CircleOutlined />}
-                      </ListItemIcon>
-                      <ListItemText primary={subItem.label} />
-                    </MenuItem>
-                  </Link>
-                ))}
-              </Menu>
-            )}
+                isCompact={compact}
+                pageId={pageId}
+                openLists={openLists}
+                setOpenLists={setOpenLists}
+              />
+            ) : item.__typename === "MenuLinkItem" ? (
+              <ListLinkItem item={item} pageId={pageId} />
+            ) : item.__typename === "MenuLabelItem" ? (
+              <div></div>
+            ) : null}
           </Fragment>
         ))}
       </List>
@@ -286,3 +116,159 @@ export const DashboardSidebar = ({
 };
 
 export default DashboardSidebar;
+
+export const GroupItem = ({
+  group,
+  isOpen,
+  onClick,
+  isCompact,
+  pageId,
+  openLists,
+  setOpenLists,
+  level = 0,
+  onMenuClose,
+}: {
+  group: MenuGroupItemType;
+  isOpen?: boolean;
+  onClick?: () => void;
+  isCompact?: boolean;
+  pageId?: string;
+  openLists: string[];
+  setOpenLists: (openLists: string[]) => void;
+  level?: number;
+  onMenuClose?: () => void;
+}) => {
+  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  const handleClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      onClick && onClick();
+      if (isCompact) {
+        setMenuAnchor(!!menuAnchor ? null : event.currentTarget);
+      }
+    },
+    [menuAnchor, onClick, isCompact]
+  );
+
+  const handleMenuClose = useCallback(() => {
+    if (isCompact) {
+      setMenuAnchor(null);
+      onMenuClose && onMenuClose();
+    }
+  }, [isCompact, onMenuClose]);
+
+  const getSubMenuList = (isMenu?: boolean) =>
+    group.subMenu.map((subItem, j) =>
+      subItem.__typename === "MenuLinkItem" ? (
+        <ListLinkItem
+          key={j}
+          item={subItem}
+          pageId={pageId}
+          level={isMenu ? 0 : level + 1}
+        />
+      ) : subItem.__typename === "MenuGroupItem" ? (
+        <GroupItem
+          key={j}
+          group={subItem}
+          pageId={pageId}
+          isCompact={isCompact}
+          isOpen={openLists.includes(subItem.id)}
+          openLists={openLists}
+          setOpenLists={setOpenLists}
+          level={isMenu ? 0 : level + 1}
+          onMenuClose={handleMenuClose}
+          onClick={() => {
+            if (!isCompact) {
+              setOpenLists(
+                openLists.includes(subItem.id)
+                  ? [...openLists.filter((id) => id !== subItem.id)]
+                  : [...openLists, subItem.id]
+              );
+            }
+          }}
+        />
+      ) : null
+    );
+
+  return (
+    <>
+      <ListItem disablePadding>
+        <ListItemButton
+          id={group.id}
+          component={"button"}
+          onClick={handleClick}
+        >
+          <ListItemIcon
+            sx={(theme) => ({
+              pl: level ? level * 6 : undefined,
+            })}
+          >
+            {group.Icon ? <group.Icon /> : <CircleOutlined />}
+          </ListItemIcon>
+          <ListItemText primary={group.label} />
+
+          {isCompact ? (
+            <ChevronRight />
+          ) : isOpen ? (
+            <ExpandLess />
+          ) : (
+            <ExpandMore />
+          )}
+        </ListItemButton>
+      </ListItem>
+      <Collapse in={isOpen && !isCompact} timeout="auto" unmountOnExit>
+        <List disablePadding>{getSubMenuList(false)}</List>
+      </Collapse>
+      <Menu
+        open={!!menuAnchor}
+        onClose={handleMenuClose}
+        anchorEl={menuAnchor}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        sx={{
+          ml: 2,
+        }}
+      >
+        {getSubMenuList(true)}
+      </Menu>
+    </>
+  );
+};
+
+const ListLinkItem = ({
+  item,
+  pageId,
+  level = 0,
+  onClick,
+}: {
+  item: MenuLinkItemType;
+  pageId?: string;
+  level?: number;
+  onClick?: () => void;
+}) => {
+  return (
+    <ListItem disablePadding>
+      <Link href={item.path} passHref>
+        <ListItemButton
+          component="a"
+          selected={pageId === item.id}
+          onClick={onClick}
+        >
+          <ListItemIcon
+            sx={{
+              pl: level ? level * 6 : undefined,
+            }}
+          >
+            {!!item.Icon ? <item.Icon /> : <CircleOutlined />}
+          </ListItemIcon>
+          <ListItemText primary={item.label} />
+        </ListItemButton>
+      </Link>
+    </ListItem>
+  );
+};

@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { ReactNode } from "react";
 
-export type CustomNextPage = NextPage & {
+export type CustomNextPage<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactNode) => ReactNode;
 };
 

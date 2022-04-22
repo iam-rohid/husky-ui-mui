@@ -1,22 +1,14 @@
-import { Color, createTheme, PaletteMode } from "@mui/material";
-import { red } from "@mui/material/colors";
-
-export const grey: Color = {
-  "50": "#f8fafc",
-  "100": "#f1f5f9",
-  "200": "#e2e8f0",
-  "300": "#cbd5e1",
-  "400": "#94a3b8",
-  "500": "#64748b",
-  "600": "#475569",
-  "700": "#334155",
-  "800": "#1e293b",
-  "900": "#0f172a",
-  A100: "#f1f5f9",
-  A200: "#e2e8f0",
-  A400: "#94a3b8",
-  A700: "#334155",
-};
+import { createTheme, PaletteMode } from "@mui/material";
+import {
+  fuchsia,
+  green,
+  grey,
+  indigo,
+  red,
+  sky,
+  white,
+  yellow,
+} from "./colors";
 
 export const getTheme = (mode: PaletteMode) =>
   createTheme({
@@ -25,45 +17,101 @@ export const getTheme = (mode: PaletteMode) =>
       ...(mode === "light"
         ? {
             primary: {
-              main: "#556cd6",
+              ...indigo,
+              light: indigo[400],
+              main: indigo[500],
+              dark: indigo[600],
+              contrastText: grey[50],
             },
             secondary: {
-              main: "#19857b",
+              ...fuchsia,
+              light: fuchsia[400],
+              main: fuchsia[500],
+              dark: fuchsia[600],
+              contrastText: grey[50],
             },
             error: {
-              main: red.A400,
+              ...red,
+              light: red[400],
+              main: red[500],
+              dark: red[600],
+              contrastText: grey[50],
+            },
+            success: {
+              ...green,
+              light: green[400],
+              main: green[500],
+              dark: green[600],
+              contrastText: grey[50],
+            },
+            info: {
+              ...sky,
+              light: sky[400],
+              main: sky[500],
+              dark: sky[600],
+              contrastText: grey[50],
+            },
+            warning: {
+              ...yellow,
+              light: yellow[400],
+              main: yellow[500],
+              dark: yellow[600],
+              contrastText: grey[50],
             },
             grey: {
-              "50": "#f8fafc",
-              "100": "#f1f5f9",
-              "200": "#e2e8f0",
-              "300": "#cbd5e1",
-              "400": "#94a3b8",
-              "500": "#64748b",
-              "600": "#475569",
-              "700": "#334155",
-              "800": "#1e293b",
-              "900": "#0f172a",
-              A100: "#f1f5f9",
-              A200: "#e2e8f0",
-              A400: "#94a3b8",
-              A700: "#334155",
+              ...grey,
             },
             divider: grey[100],
             background: {
-              default: "#fff",
-              paper: "#fff",
+              default: white,
+              paper: white,
             },
           }
         : {
             primary: {
-              main: "#556cd6",
+              ...indigo,
+              light: indigo[300],
+              main: indigo[400],
+              dark: indigo[500],
+              contrastText: grey[800],
             },
             secondary: {
-              main: "#19857b",
+              ...fuchsia,
+              main: fuchsia[400],
+              light: fuchsia[300],
+              dark: fuchsia[500],
+              contrastText: grey[800],
             },
             error: {
-              main: red.A400,
+              ...red,
+              main: red[400],
+              light: red[300],
+              dark: red[500],
+              contrastText: grey[800],
+            },
+            success: {
+              ...green,
+              main: green[400],
+              light: green[300],
+              dark: green[500],
+              contrastText: grey[800],
+            },
+            info: {
+              ...sky,
+              main: sky[400],
+              light: sky[300],
+              dark: sky[500],
+              contrastText: grey[800],
+            },
+            warning: {
+              ...yellow,
+              main: yellow[400],
+              light: yellow[300],
+              dark: yellow[500],
+              contrastText: grey[800],
+            },
+            grey: {
+              ...grey,
             },
             divider: grey[800],
             background: {
@@ -110,6 +158,14 @@ export const getTheme = (mode: PaletteMode) =>
               backgroundColor:
                 theme.palette.mode === "light" ? grey[50] : grey[800],
             },
+            "&.Mui-selected": {
+              backgroundColor:
+                theme.palette.mode === "light" ? grey[50] : grey[800],
+              "&:focus-visible, &:hover": {
+                backgroundColor:
+                  theme.palette.mode === "light" ? grey[50] : grey[800],
+              },
+            },
           }),
         },
       },
@@ -128,10 +184,10 @@ export const getTheme = (mode: PaletteMode) =>
             },
             "&.Mui-selected": {
               backgroundColor:
-                theme.palette.mode === "light" ? grey[100] : grey[700],
+                theme.palette.mode === "light" ? grey[50] : grey[800],
               "&:focus-visible, &:hover": {
                 backgroundColor:
-                  theme.palette.mode === "light" ? grey[100] : grey[700],
+                  theme.palette.mode === "light" ? grey[50] : grey[800],
               },
             },
           }),
@@ -201,6 +257,13 @@ export const getTheme = (mode: PaletteMode) =>
             px: [4, 6],
           },
           maxWidth: "xl",
+        },
+      },
+      MuiChip: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            borderRadius: theme.shape.borderRadius,
+          }),
         },
       },
     },

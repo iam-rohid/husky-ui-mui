@@ -1,6 +1,6 @@
 import React from "react";
-import { DashboardLayout } from "../../src/layouts/dashboard-layout";
-import { CustomNextPage } from "../../src/types";
+import { DashboardLayout } from "src/layouts/dashboard-layout";
+import { CustomNextPage } from "src/types";
 
 const AnalyticsPage: CustomNextPage = () => {
   return <div>AnalyticsPage</div>;
