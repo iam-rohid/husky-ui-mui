@@ -89,7 +89,7 @@ export const DashboardLayout = ({
             setSidebarCompact={setSidebarCompact}
             sidebarCompact={sidebarCompact}
           />
-          <Container maxWidth="xl">{children}</Container>
+          <Container>{children}</Container>
         </Box>
       </>
     </>

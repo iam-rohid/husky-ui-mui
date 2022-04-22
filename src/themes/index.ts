@@ -1,4 +1,4 @@
-import { alpha, Color, createTheme, PaletteMode } from "@mui/material";
+import { Color, createTheme, PaletteMode } from "@mui/material";
 import { red } from "@mui/material/colors";
 
 export const grey: Color = {
@@ -200,6 +200,7 @@ export const getTheme = (mode: PaletteMode) =>
           sx: {
             px: [4, 6],
           },
+          maxWidth: "xl",
         },
       },
     },

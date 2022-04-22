@@ -108,6 +108,11 @@ export const DashboardHeader = ({
           minWidth: theme.spacing(36),
         }),
       }}
+      sx={{
+        "& .MuiMenu-paper": {
+          mt: 4,
+        },
+      }}
     >
       <MenuItem
         onClick={() => {
@@ -161,6 +166,11 @@ export const DashboardHeader = ({
         sx: (theme) => ({
           minWidth: theme.spacing(44),
         }),
+      }}
+      sx={{
+        "& .MuiMenu-paper": {
+          mt: 4,
+        },
       }}
     >
       <MenuItem
@@ -292,7 +302,7 @@ export const DashboardHeader = ({
         boxShadow: `0 1px 0 0 ${theme.palette.divider}`,
       })}
     >
-      <Container maxWidth="xl">
+      <Container>
         <Box
           sx={(theme) => ({
             display: "flex",
