@@ -1,20 +1,31 @@
 import { Box, Drawer, Container, Theme, useMediaQuery } from "@mui/material";
 import { ReactNode, useEffect, useState } from "react";
 import useKeyboard from "../../hooks/use-keyboard";
+import useLocalstorage from "../../hooks/use-localstorage";
 import { grey } from "../../themes";
 import DashboardHeader from "./dashboard-header";
 import DashboardSidebar from "./dashboard-sidebar";
 
 export type DashboardLayoutProps = {
   children: ReactNode;
+  title: string;
+  pageId?: string;
 };
 
-export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+export const DashboardLayout = ({
+  children,
+  title,
+  pageId,
+}: DashboardLayoutProps) => {
   const [showSidebarOnMobile, setShowSidebarOnMobile] = useState(false);
-  const [sidebarCompact, setSidebarCompact] = useState(false);
+  const [sidebarCompact, setSidebarCompact] = useLocalstorage<boolean>(
+    false,
+    "compact-sidebar"
+  );
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
   );
+
   useEffect(() => {
     if (!isMobile && showSidebarOnMobile) {
       setShowSidebarOnMobile(false);
@@ -45,7 +56,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           }),
         }}
       >
-        <DashboardSidebar />
+        <DashboardSidebar pageId={pageId} />
       </Drawer>
       <>
         {!isMobile && (
@@ -59,7 +70,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               zIndex: theme.zIndex.drawer - 10,
             })}
           >
-            <DashboardSidebar compact={sidebarCompact} />
+            <DashboardSidebar pageId={pageId} compact={sidebarCompact} />
           </Box>
         )}
         <Box
@@ -72,7 +83,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           })}
         >
           <DashboardHeader
-            title="Dashboard"
+            title={title}
             showSidbarOnMobile={showSidebarOnMobile}
             setShowSidbarOnMobile={setShowSidebarOnMobile}
             setSidebarCompact={setSidebarCompact}

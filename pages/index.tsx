@@ -45,4 +45,8 @@ const Home: CustomNextPage = () => {
 
 export default Home;
 
-Home.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Home.getLayout = (page) => (
+  <DashboardLayout title="Dashboard" pageId="dashboard">
+    {page}
+  </DashboardLayout>
+);

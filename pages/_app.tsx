@@ -3,6 +3,7 @@ import { CacheProvider } from "@emotion/react";
 import createEmotionCache from "../src/utils/create-emotion-cache";
 import { CustomAppProps } from "../src/types";
 import ColorScehmeProvider from "../src/context/color-scheme";
+import { SnackbarProvider } from "notistack";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -19,7 +20,15 @@ function MyApp({
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ColorScehmeProvider>
-        {getPageFromLayout(<Component {...pageProps} />)}
+        <SnackbarProvider
+          maxSnack={5}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+        >
+          {getPageFromLayout(<Component {...pageProps} />)}
+        </SnackbarProvider>
       </ColorScehmeProvider>
     </CacheProvider>
   );

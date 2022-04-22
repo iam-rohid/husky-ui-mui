@@ -15,17 +15,155 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
   Paper,
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
+const sidebarMenuList = [
+  {
+    id: "dashboard",
+    icon: <Dashboard />,
+    label: "Dashboard",
+    path: "/",
+  },
+  {
+    id: "analytics",
+    icon: <Analytics />,
+    label: "Analytics",
+    path: "/analytics",
+  },
+  {
+    id: "components",
+    icon: <Category />,
+    label: "Components",
+    path: "",
+    subMenu: [
+      {
+        id: "buttons",
+        icon: <CircleOutlined />,
+        label: "Buttons",
+        path: "/components/buttons",
+      },
+      {
+        id: "cards",
+        icon: <CircleOutlined />,
+        label: "Cards",
+        path: "/components/cards",
+      },
+      {
+        id: "chips",
+        icon: <CircleOutlined />,
+        label: "Chips",
+        path: "/components/chips",
+      },
+      {
+        id: "dialogs",
+        icon: <CircleOutlined />,
+        label: "Dialogs",
+        path: "/components/dialogs",
+      },
+      {
+        id: "panels",
+        icon: <CircleOutlined />,
+        label: "Expansion Panels",
+        path: "/components/expansion-panels",
+      },
+      {
+        id: "forms",
+        icon: <CircleOutlined />,
+        label: "Forms",
+        path: "/components/forms",
+      },
+      {
+        id: "icons",
+        icon: <CircleOutlined />,
+        label: "Icons",
+        path: "/components/icons",
+      },
+      {
+        id: "lists",
+        icon: <CircleOutlined />,
+        label: "Lists",
+        path: "/components/lists",
+      },
+      {
+        id: "menus",
+        icon: <CircleOutlined />,
+        label: "Menus",
+        path: "/components/menus",
+      },
+      {
+        id: "paper",
+        icon: <CircleOutlined />,
+        label: "Paper",
+        path: "/components/paper",
+      },
+      {
+        id: "progress",
+        icon: <CircleOutlined />,
+        label: "Progress",
+        path: "/components/progress",
+      },
+      {
+        id: "sliders",
+        icon: <CircleOutlined />,
+        label: "Sliders",
+        path: "/components/sliders",
+      },
+      {
+        id: "snackbars",
+        icon: <CircleOutlined />,
+        label: "Snackbars",
+        path: "/components/snackbars",
+      },
+      {
+        id: "tabs",
+        icon: <CircleOutlined />,
+        label: "Tabs",
+        path: "/components/tabs",
+      },
+    ],
+  },
+  {
+    id: "pages",
+    icon: <Category />,
+    label: "Pages",
+    path: "",
+    subMenu: [
+      {
+        id: "buttons",
+        icon: <CircleOutlined />,
+        label: "Buttons",
+        path: "/components/buttons",
+      },
+      {
+        id: "cards",
+        icon: <CircleOutlined />,
+        label: "Cards",
+        path: "/components/cards",
+      },
+    ],
+  },
+];
 export type DashboardSidebarProps = {
   compact?: boolean;
+  pageId?: string;
 };
-export const DashboardSidebar = ({ compact }: DashboardSidebarProps) => {
+
+export const DashboardSidebar = ({
+  compact,
+  pageId,
+}: DashboardSidebarProps) => {
   const [openList, setOpenList] = useState<string | null>(null);
+
+  useEffect(() => {
+    setOpenList(null);
+  }, [compact]);
+
   return (
     <Paper
       component="aside"
@@ -73,69 +211,75 @@ export const DashboardSidebar = ({ compact }: DashboardSidebarProps) => {
       </Box>
 
       <List sx={{ width: "100%" }}>
-        <ListItem disablePadding>
-          <Link href={"/"} passHref>
-            <ListItemButton component="a">
-              <ListItemIcon>
-                <Dashboard />
-              </ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </ListItemButton>
-          </Link>
-        </ListItem>
+        {sidebarMenuList.map((item, i) => (
+          <Fragment key={i}>
+            <ListItem disablePadding>
+              <Link href={item.path} passHref={!!item.path}>
+                <ListItemButton
+                  id={item.id}
+                  component={item.path ? "a" : "button"}
+                  selected={pageId === (item.id || "")}
+                  onClick={() => {
+                    if (item.subMenu) {
+                      setOpenList(openList === item.id ? null : item.id);
+                    }
+                  }}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.label} />
 
-        <ListItem disablePadding>
-          <Link href={"/analytics"} passHref>
-            <ListItemButton component="a">
-              <ListItemIcon>
-                <Analytics />
-              </ListItemIcon>
-              <ListItemText primary="Analytics" />
-            </ListItemButton>
-          </Link>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton
-            component="button"
-            onClick={() => setOpenList(openList ? null : "components")}
-          >
-            <ListItemIcon>
-              <Category />
-            </ListItemIcon>
-            <ListItemText primary="Components" />
-            {!compact &&
-              (openList === "components" ? <ExpandLess /> : <ExpandMore />)}
-          </ListItemButton>
-        </ListItem>
-
-        {!compact && (
-          <Collapse in={openList === "components"} timeout="auto" unmountOnExit>
-            <List disablePadding>
-              <ListItem disablePadding>
-                <Link href={`components/buttons`} passHref>
-                  <ListItemButton component="a" sx={{ pl: 10 }}>
-                    <ListItemIcon>
-                      <CircleOutlined />
-                    </ListItemIcon>
-                    <ListItemText primary="Buttons" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-
-              <ListItem disablePadding>
-                <Link href={`components/icon-buttons`} passHref>
-                  <ListItemButton component="a" sx={{ pl: 10 }}>
-                    <ListItemIcon>
-                      <CircleOutlined />
-                    </ListItemIcon>
-                    <ListItemText primary="Icon Buttons" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-            </List>
-          </Collapse>
-        )}
+                  {!!item.subMenu &&
+                    (openList === item.id ? <ExpandLess /> : <ExpandMore />)}
+                </ListItemButton>
+              </Link>
+            </ListItem>
+            {!!item.subMenu && !compact && (
+              <Collapse in={openList === item.id} timeout="auto" unmountOnExit>
+                <List disablePadding>
+                  {item.subMenu.map((subItem, j) => (
+                    <ListItem disablePadding key={j}>
+                      <Link href={`components/buttons`} passHref>
+                        <ListItemButton component="a" sx={{ pl: 10 }}>
+                          <ListItemIcon>
+                            {subItem.icon || <CircleOutlined />}
+                          </ListItemIcon>
+                          <ListItemText primary={subItem.label} />
+                        </ListItemButton>
+                      </Link>
+                    </ListItem>
+                  ))}
+                </List>
+              </Collapse>
+            )}
+            {!!item.subMenu && compact && (
+              <Menu
+                open={openList === item.id}
+                onClose={() => setOpenList(null)}
+                anchorEl={document.getElementById(item.id)}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                sx={{
+                  "& .MuiMenu-paper": {
+                    ml: 2,
+                  },
+                }}
+              >
+                {item.subMenu.map((subItem, j) => (
+                  <Link href={`components/buttons`} passHref key={j}>
+                    <MenuItem component="a">
+                      <ListItemIcon>
+                        {subItem.icon || <CircleOutlined />}
+                      </ListItemIcon>
+                      <ListItemText primary={subItem.label} />
+                    </MenuItem>
+                  </Link>
+                ))}
+              </Menu>
+            )}
+          </Fragment>
+        ))}
       </List>
     </Paper>
   );

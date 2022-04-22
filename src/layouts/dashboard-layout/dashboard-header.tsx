@@ -211,7 +211,7 @@ export const DashboardHeader = ({
         <Search
           sx={(theme) => ({
             position: "absolute",
-            left: theme.spacing(2),
+            left: theme.spacing(3),
             zIndex: 1,
             top: "50%",
             transform: "translateY(-50%)",
@@ -221,7 +221,7 @@ export const DashboardHeader = ({
         <Typography
           sx={(theme) => ({
             position: "absolute",
-            right: theme.spacing(2),
+            right: theme.spacing(3),
             zIndex: 1,
             top: "50%",
             transform: "translateY(-50%)",
@@ -248,9 +248,9 @@ export const DashboardHeader = ({
             color: theme.palette.mode === "light" ? grey[500] : grey[400],
             opacity: 1,
           },
-          paddingRight: theme.spacing(10),
-          paddingLeft: theme.spacing(10),
-          height: theme.spacing(9),
+          paddingRight: theme.spacing(11),
+          paddingLeft: theme.spacing(11),
+          height: theme.spacing(10),
           borderRadius: `${theme.shape.borderRadius}px`,
         })}
       />

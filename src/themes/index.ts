@@ -49,9 +49,9 @@ export const getTheme = (mode: PaletteMode) =>
               A400: "#94a3b8",
               A700: "#334155",
             },
-            divider: alpha(grey[200], 0.6),
+            divider: grey[100],
             background: {
-              default: grey[50],
+              default: "#fff",
               paper: "#fff",
             },
           }
@@ -65,10 +65,10 @@ export const getTheme = (mode: PaletteMode) =>
             error: {
               main: red.A400,
             },
-            divider: alpha(grey[700], 0.6),
+            divider: grey[800],
             background: {
               default: grey[900],
-              paper: grey[800],
+              paper: grey[900],
             },
           }),
     },
@@ -84,9 +84,12 @@ export const getTheme = (mode: PaletteMode) =>
         },
         styleOverrides: {
           root: ({ theme }) => ({
+            transition: "none",
+            borderRadius: `${theme.shape.borderRadius}px`,
             "&:focus-visible, &:hover": {
               backgroundColor:
-                theme.palette.mode === "light" ? grey[100] : grey[800],
+                theme.palette.mode === "light" ? grey[50] : grey[800],
+              boxShadow: `0 0 0 1px ${theme.palette.divider}`,
             },
             "&:active": {
               boxShadow: `0 0 0 2px ${
@@ -105,7 +108,7 @@ export const getTheme = (mode: PaletteMode) =>
           root: ({ theme }) => ({
             "&:focus-visible, &:hover": {
               backgroundColor:
-                theme.palette.mode === "light" ? grey[100] : grey[700],
+                theme.palette.mode === "light" ? grey[50] : grey[800],
             },
           }),
         },
@@ -120,10 +123,8 @@ export const getTheme = (mode: PaletteMode) =>
             gap: theme.spacing(5),
             transition: "none",
             "&:focus-visible, &:hover": {
-              backgroundColor: alpha(
-                theme.palette.mode === "light" ? grey[100] : grey[700],
-                0.5
-              ),
+              backgroundColor:
+                theme.palette.mode === "light" ? grey[50] : grey[800],
             },
             "&.Mui-selected": {
               backgroundColor:
@@ -179,12 +180,7 @@ export const getTheme = (mode: PaletteMode) =>
           paper: ({ theme }) => ({
             backgroundImage: "none",
             backgroundColor: theme.palette.background.paper,
-            boxShadow: `0 0 0 1px ${
-              theme.palette.divider
-            }, 0 4px 32px 0px ${alpha(
-              "#000",
-              theme.palette.mode === "dark" ? 0.5 : 0.2
-            )}`,
+            boxShadow: `0 0 0 1px ${theme.palette.divider}`,
           }),
         },
       },
