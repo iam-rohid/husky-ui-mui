@@ -1,4 +1,4 @@
-import { createTheme, PaletteMode } from "@mui/material";
+import { alpha, createTheme, PaletteMode } from "@mui/material";
 import {
   fuchsia,
   green,
@@ -264,6 +264,27 @@ export const getTheme = (mode: PaletteMode) =>
           root: ({ theme }) => ({
             borderRadius: theme.shape.borderRadius,
           }),
+        },
+      },
+      MuiAppBar: {
+        defaultProps: {
+          color: "default",
+        },
+        styleOverrides: {
+          root: ({ theme }) => ({
+            paddingBlock: theme.spacing(1),
+          }),
+          colorDefault: ({ theme }) => ({
+            backgroundColor: alpha(theme.palette.background.default, 0.5),
+            backdropFilter: "blur(10px)",
+            backgroundImage: "none",
+          }),
+        },
+      },
+      MuiToolbar: {
+        defaultProps: {
+          disableGutters: true,
+          variant: "dense",
         },
       },
     },

@@ -6,8 +6,7 @@ import {
   ExpandMore,
 } from "@mui/icons-material";
 import {
-  alpha,
-  Box,
+  AppBar,
   Collapse,
   List,
   ListItem,
@@ -16,6 +15,7 @@ import {
   ListItemText,
   Menu,
   Paper,
+  Toolbar,
   Typography,
 } from "@mui/material";
 import Link from "next/link";
@@ -55,32 +55,27 @@ export const DashboardSidebar = ({
         overflowY: "auto",
       }}
     >
-      <Box
-        sx={(theme) => ({
-          bgcolor: alpha(theme.palette.background.paper, 0.75),
-          backdropFilter: "blur(5px)",
-          height: theme.spacing(14),
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: 10,
-          position: "sticky",
-          top: 0,
-        })}
-      >
-        <Typography
-          sx={(theme) => ({
-            fontSize: theme.spacing(6),
-            fontWeight: 800,
-            textTransform: "uppercase",
-            whiteSpace: "nowrap",
+      <AppBar position="sticky" color="default">
+        <Toolbar
+          variant="dense"
+          sx={{
             overflow: "hidden",
-            textOverflow: "ellipsis",
-          })}
+          }}
         >
-          {compact ? "HUI" : "Husky UI"}
-        </Typography>
-      </Box>
+          <Typography
+            sx={(theme) => ({
+              fontSize: theme.spacing(6),
+              fontWeight: 800,
+              textTransform: "uppercase",
+              whiteSpace: "nowrap",
+              textAlign: "center",
+              width: "100%",
+            })}
+          >
+            {compact ? "HUI" : "Husky UI"}
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
       <List sx={{ width: "100%" }}>
         {demo01Menu.map((item, i) => (
@@ -126,7 +121,6 @@ export const GroupItem = ({
   openLists,
   setOpenLists,
   level = 0,
-  onMenuClose,
 }: {
   group: MenuGroupItemType;
   isOpen?: boolean;
@@ -136,7 +130,6 @@ export const GroupItem = ({
   openLists: string[];
   setOpenLists: (openLists: string[]) => void;
   level?: number;
-  onMenuClose?: () => void;
 }) => {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
   const handleClick = useCallback(
@@ -152,9 +145,8 @@ export const GroupItem = ({
   const handleMenuClose = useCallback(() => {
     if (isCompact) {
       setMenuAnchor(null);
-      onMenuClose && onMenuClose();
     }
-  }, [isCompact, onMenuClose]);
+  }, [isCompact]);
 
   const getSubMenuList = (isMenu?: boolean) =>
     group.subMenu.map((subItem, j) =>
@@ -175,7 +167,6 @@ export const GroupItem = ({
           openLists={openLists}
           setOpenLists={setOpenLists}
           level={isMenu ? 0 : level + 1}
-          onMenuClose={handleMenuClose}
           onClick={() => {
             if (!isCompact) {
               setOpenLists(

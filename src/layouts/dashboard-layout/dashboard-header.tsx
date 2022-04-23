@@ -23,6 +23,8 @@ import {
   ListItemIcon,
   Divider,
   ListItemText,
+  AppBar,
+  Toolbar,
 } from "@mui/material";
 import { useState, MouseEvent, useMemo, useRef, useCallback } from "react";
 import { useColorScheme } from "../../context/color-scheme";
@@ -247,7 +249,7 @@ export const DashboardHeader = ({
         placeholder="Search..."
         inputRef={searchInputRef}
         sx={(theme) => ({
-          bgcolor: theme.palette.background.paper,
+          bgcolor: alpha(theme.palette.background.paper, 0.5),
           boxShadow: `0 0 0 1px ${theme.palette.divider}`,
           "&:focus-within": {
             boxShadow: `0 0 0 2px ${
@@ -291,27 +293,13 @@ export const DashboardHeader = ({
   );
 
   return (
-    <Box
-      component="header"
-      sx={(theme) => ({
-        position: "sticky",
-        top: 0,
-        zIndex: theme.zIndex.appBar,
-        bgcolor: alpha(theme.palette.background.default, 0.5),
-        backdropFilter: "blur(5px)",
-        boxShadow: `0 1px 0 0 ${theme.palette.divider}`,
-      })}
-    >
+    <AppBar position="sticky">
       <Container>
-        <Box
-          sx={(theme) => ({
-            display: "flex",
-            flexdirection: "row",
-            alignItems: "center",
-            justifyContent: "flex-start",
-            height: theme.spacing(14),
-            gap: 4,
-          })}
+        <Toolbar
+          sx={{
+            gap: 2,
+          }}
+          disableGutters
         >
           <IconButton
             onClick={() => {
@@ -336,9 +324,9 @@ export const DashboardHeader = ({
             {title}
           </Typography>
           {actions}
-        </Box>
+        </Toolbar>
       </Container>
-    </Box>
+    </AppBar>
   );
 };
 
