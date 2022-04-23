@@ -8,7 +8,7 @@ export type StatCardProps = {
   percentageText: string;
   ChipComponent?: ReactNode;
 };
-const StatCard = ({
+export const StatCard = ({
   title,
   value,
   percentage,
@@ -93,5 +93,3 @@ const StatCard = ({
     </Paper>
   );
 };
-
-export default StatCard;

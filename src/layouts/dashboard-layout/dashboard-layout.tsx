@@ -1,8 +1,7 @@
 import { Box, Drawer, Container, Theme, useMediaQuery } from "@mui/material";
 import { ReactNode, useEffect, useState } from "react";
-import useKeyboard from "../../hooks/use-keyboard";
-import useLocalstorage from "../../hooks/use-localstorage";
-import { grey } from "../../themes/colors";
+import useKeyboard from "src/hooks/use-keyboard";
+import useLocalstorage from "src/hooks/use-localstorage";
 import DashboardHeader from "./dashboard-header";
 import DashboardSidebar from "./dashboard-sidebar";
 

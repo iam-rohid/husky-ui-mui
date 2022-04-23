@@ -1,9 +1,9 @@
 import { Box, Chip, Grid } from "@mui/material";
 import { DashboardLayout } from "src/layouts/dashboard-layout";
 import { CustomNextPage } from "src/types";
-import faker from "@faker-js/faker";
 import { GetStaticProps } from "next";
-import StatCard from "src/components/stat-card";
+import { StatCard } from "src/components/cards";
+import faker from "@faker-js/faker";
 
 type CRMProps = {
   salesToday: StatType;

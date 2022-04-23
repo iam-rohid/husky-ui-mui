@@ -5,9 +5,9 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { createContext, ReactNode, useContext, useMemo } from "react";
-import useKeyboard from "../hooks/use-keyboard";
-import useLocalstorage from "../hooks/use-localstorage";
-import { getTheme } from "../themes";
+import useKeyboard from "src/hooks/use-keyboard";
+import useLocalstorage from "src/hooks/use-localstorage";
+import { getTheme } from "src/themes";
 export type ColorScheme = "light" | "dark" | "system";
 
 export type ColorSchemeContextType = {

@@ -2,12 +2,10 @@ import {
   Computer,
   DarkMode,
   LightMode,
-  Logout,
   Menu as MenuIcon,
   Notifications,
   Person,
   Search,
-  Settings,
 } from "@mui/icons-material";
 import {
   alpha,
@@ -15,21 +13,18 @@ import {
   Container,
   IconButton,
   InputBase,
-  MenuItem,
   Theme,
   Typography,
   useMediaQuery,
-  Menu,
-  ListItemIcon,
-  Divider,
-  ListItemText,
   AppBar,
   Toolbar,
+  Tooltip,
 } from "@mui/material";
-import { useState, MouseEvent, useMemo, useRef, useCallback } from "react";
-import { useColorScheme } from "../../context/color-scheme";
-import useKeyboard from "../../hooks/use-keyboard";
-import { grey } from "../../themes/colors";
+import { useState, MouseEvent, useRef } from "react";
+import { ColorSchemeMenu, ProfileMenu } from "src/components/menus";
+import { useColorScheme } from "src/context/color-scheme";
+import useKeyboard from "src/hooks/use-keyboard";
+import { grey } from "src/themes/colors";
 
 export type DashboardHeaderProps = {
   title: string;
@@ -50,9 +45,9 @@ export const DashboardHeader = ({
     theme.breakpoints.down("md")
   );
   const { colorScheme, setColorScheme } = useColorScheme();
-  const [menuButtonAnchorEl, setMenuButtonAnchorEl] =
+  const [colorSchemeMenuAnchorEL, setColorSchemeMenuAnchorEL] =
     useState<HTMLElement | null>(null);
-  const [userMenuButtonAnchorEl, setUserMenuButtonAnchorEl] =
+  const [profileMenuAnchorEl, setProfileMenuAnchorEl] =
     useState<HTMLElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -68,146 +63,18 @@ export const DashboardHeader = ({
     },
   });
 
-  const colorSchemeMenuOpen = useMemo(
-    () => Boolean(menuButtonAnchorEl),
-    [menuButtonAnchorEl]
-  );
-  const userMenuOpen = useMemo(
-    () => Boolean(userMenuButtonAnchorEl),
-    [userMenuButtonAnchorEl]
-  );
-
-  const handleColorSchemeMenuButtonClick = (
-    e: MouseEvent<HTMLButtonElement>
-  ) => {
-    setMenuButtonAnchorEl(e.currentTarget);
+  const handleColorSchemeClick = (e: MouseEvent<HTMLButtonElement>) => {
+    setColorSchemeMenuAnchorEL(e.currentTarget);
   };
   const handleColorSchemeMenuClose = () => {
-    setMenuButtonAnchorEl(null);
+    setColorSchemeMenuAnchorEL(null);
   };
-  const handleUserMenuButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    setUserMenuButtonAnchorEl(e.currentTarget);
+  const handleProfileClick = (e: MouseEvent<HTMLButtonElement>) => {
+    setProfileMenuAnchorEl(e.currentTarget);
   };
-  const handleUserMenuClose = () => {
-    setUserMenuButtonAnchorEl(null);
+  const handleProfileMenuClose = () => {
+    setProfileMenuAnchorEl(null);
   };
-
-  const colorSchemeMenu = (
-    <Menu
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "right",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      anchorEl={menuButtonAnchorEl}
-      open={colorSchemeMenuOpen}
-      onClose={handleColorSchemeMenuClose}
-      MenuListProps={{
-        sx: (theme) => ({
-          minWidth: theme.spacing(36),
-        }),
-      }}
-      sx={{
-        "& .MuiMenu-paper": {
-          mt: 4,
-        },
-      }}
-    >
-      <MenuItem
-        onClick={() => {
-          setColorScheme("light");
-          handleColorSchemeMenuClose();
-        }}
-      >
-        <ListItemIcon>
-          <LightMode />
-        </ListItemIcon>
-        Light
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          setColorScheme("dark");
-          handleColorSchemeMenuClose();
-        }}
-      >
-        <ListItemIcon>
-          <DarkMode />
-        </ListItemIcon>
-        Dark
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          setColorScheme("system");
-          handleColorSchemeMenuClose();
-        }}
-      >
-        <ListItemIcon>
-          <Computer />
-        </ListItemIcon>
-        System
-      </MenuItem>
-    </Menu>
-  );
-  const userMenu = (
-    <Menu
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "right",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      anchorEl={userMenuButtonAnchorEl}
-      open={userMenuOpen}
-      onClose={handleUserMenuClose}
-      MenuListProps={{
-        sx: (theme) => ({
-          minWidth: theme.spacing(44),
-        }),
-      }}
-      sx={{
-        "& .MuiMenu-paper": {
-          mt: 4,
-        },
-      }}
-    >
-      <MenuItem
-        onClick={() => {
-          handleUserMenuClose();
-        }}
-      >
-        <ListItemIcon>
-          <Person />
-        </ListItemIcon>
-        Profile
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          handleUserMenuClose();
-        }}
-      >
-        <ListItemIcon>
-          <Settings />
-        </ListItemIcon>
-        Settings
-      </MenuItem>
-      <Divider />
-      <MenuItem
-        onClick={() => {
-          handleUserMenuClose();
-        }}
-      >
-        <ListItemIcon>
-          <Logout />
-        </ListItemIcon>
-        <ListItemText>Logout</ListItemText>
-      </MenuItem>
-    </Menu>
-  );
 
   const searchBar = isMobile ? (
     <IconButton>
@@ -275,20 +142,40 @@ export const DashboardHeader = ({
       <IconButton>
         <Notifications />
       </IconButton>
-      <IconButton onClick={handleColorSchemeMenuButtonClick}>
-        {colorScheme === "light" ? (
-          <LightMode />
-        ) : colorScheme === "dark" ? (
-          <DarkMode />
-        ) : (
-          <Computer />
-        )}
-      </IconButton>
-      <IconButton onClick={handleUserMenuButtonClick}>
+      <Tooltip title="Change Color Scheme (⌘B)">
+        <IconButton onClick={handleColorSchemeClick}>
+          {colorScheme === "light" ? (
+            <LightMode />
+          ) : colorScheme === "dark" ? (
+            <DarkMode />
+          ) : (
+            <Computer />
+          )}
+        </IconButton>
+      </Tooltip>
+      <IconButton onClick={handleProfileClick}>
         <Person />
       </IconButton>
-      {colorSchemeMenu}
-      {userMenu}
+      <ColorSchemeMenu
+        anchorEl={colorSchemeMenuAnchorEL}
+        open={!!colorSchemeMenuAnchorEL}
+        onClose={handleColorSchemeMenuClose}
+        sx={{
+          "& .MuiMenu-paper": {
+            mt: 4,
+          },
+        }}
+      />
+      <ProfileMenu
+        anchorEl={profileMenuAnchorEl}
+        open={!!profileMenuAnchorEl}
+        onClose={handleProfileMenuClose}
+        sx={{
+          "& .MuiMenu-paper": {
+            mt: 4,
+          },
+        }}
+      />
     </>
   );
 
@@ -301,17 +188,19 @@ export const DashboardHeader = ({
           }}
           disableGutters
         >
-          <IconButton
-            onClick={() => {
-              if (isMobile) {
-                setShowSidbarOnMobile(!showSidbarOnMobile);
-              } else {
-                setSidebarCompact(!compactSidebar);
-              }
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
+          <Tooltip title="Compact Sidebar (⌘/)">
+            <IconButton
+              onClick={() => {
+                if (isMobile) {
+                  setShowSidbarOnMobile(!showSidbarOnMobile);
+                } else {
+                  setSidebarCompact(!compactSidebar);
+                }
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
           <Typography
             variant="h1"
             sx={(theme) => ({

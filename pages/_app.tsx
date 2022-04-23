@@ -1,9 +1,9 @@
-import Head from "next/head";
 import { CacheProvider } from "@emotion/react";
-import createEmotionCache from "../src/utils/create-emotion-cache";
-import { CustomAppProps } from "../src/types";
-import ColorScehmeProvider from "../src/context/color-scheme";
+import createEmotionCache from "src/utils/create-emotion-cache";
+import { CustomAppProps } from "src/types";
+import ColorScehmeProvider from "src/context/color-scheme";
 import { SnackbarProvider } from "notistack";
+import PageProgressBar from "src/components/page-progress-bar";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -16,9 +16,6 @@ function MyApp({
 
   return (
     <CacheProvider value={emotionCache}>
-      <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
       <ColorScehmeProvider>
         <SnackbarProvider
           maxSnack={5}
@@ -28,6 +25,7 @@ function MyApp({
           }}
         >
           {getPageFromLayout(<Component {...pageProps} />)}
+          <PageProgressBar />
         </SnackbarProvider>
       </ColorScehmeProvider>
     </CacheProvider>
