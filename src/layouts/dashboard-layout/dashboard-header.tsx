@@ -3,6 +3,7 @@ import {
   DarkMode,
   LightMode,
   Menu as MenuIcon,
+  Message,
   Notifications,
   Person,
   Search,
@@ -19,12 +20,54 @@ import {
   AppBar,
   Toolbar,
   Tooltip,
+  Avatar,
 } from "@mui/material";
-import { useState, MouseEvent, useRef } from "react";
+import { useState, MouseEvent, useRef, useEffect } from "react";
 import { ColorSchemeMenu, ProfileMenu } from "src/components/menus";
+import NotificationsMenu, {
+  NotificationType,
+} from "src/components/menus/notifications-menu";
 import { useColorScheme } from "src/context/color-scheme";
 import useKeyboard from "src/hooks/use-keyboard";
 import { grey } from "src/themes/colors";
+import faker from "@faker-js/faker";
+
+type User = {
+  name: string;
+  avatar: string;
+  email: string;
+  username: string;
+};
+const getUser = (): User => ({
+  name: faker.name.findName(),
+  avatar: faker.image.avatar(),
+  email: faker.internet.email(),
+  username: faker.internet.userName(),
+});
+
+const getNotifications = (amount?: number) =>
+  new Array(
+    amount ||
+      faker.random.number({
+        min: 2,
+        max: 20,
+      })
+  )
+    .fill(0)
+    .map<NotificationType>(
+      () =>
+        ({
+          title: faker.name.findName(),
+          icon: <Person />,
+          avatarSrc: faker.random.boolean()
+            ? faker.internet.avatar()
+            : undefined,
+          secondaryText: faker.lorem.sentences(2),
+          date: faker.date.past(),
+          read: faker.random.boolean(),
+          href: "/",
+        } as NotificationType)
+    );
 
 export type DashboardHeaderProps = {
   title: string;
@@ -41,14 +84,23 @@ export const DashboardHeader = ({
   showSidbarOnMobile,
   setShowSidbarOnMobile,
 }: DashboardHeaderProps) => {
+  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const [messages, setMessages] = useState<NotificationType[]>([]);
+  const [user, setUser] = useState<User | null>(null);
+
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
   );
-  const { colorScheme, setColorScheme } = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const [colorSchemeMenuAnchorEL, setColorSchemeMenuAnchorEL] =
     useState<HTMLElement | null>(null);
   const [profileMenuAnchorEl, setProfileMenuAnchorEl] =
     useState<HTMLElement | null>(null);
+  const [notificationsMenuAnchorEl, setNotificationsMenuAnchorEl] =
+    useState<HTMLElement | null>(null);
+  const [messagesMenuAnchorEl, setMessagesMenuAnchorEl] =
+    useState<HTMLElement | null>(null);
+
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useKeyboard("k", {
@@ -63,8 +115,17 @@ export const DashboardHeader = ({
     },
   });
 
+  useEffect(() => {
+    setNotifications(getNotifications());
+    setMessages(getNotifications());
+    setUser(getUser());
+  }, []);
+
   const handleColorSchemeClick = (e: MouseEvent<HTMLButtonElement>) => {
     setColorSchemeMenuAnchorEL(e.currentTarget);
+  };
+  const handleNotificationsClick = (e: MouseEvent<HTMLButtonElement>) => {
+    setNotificationsMenuAnchorEl(e.currentTarget);
   };
   const handleColorSchemeMenuClose = () => {
     setColorSchemeMenuAnchorEL(null);
@@ -74,6 +135,16 @@ export const DashboardHeader = ({
   };
   const handleProfileMenuClose = () => {
     setProfileMenuAnchorEl(null);
+  };
+  const handleNotificationsMenuClose = () => {
+    setNotificationsMenuAnchorEl(null);
+  };
+
+  const handleMessagesClick = (e: MouseEvent<HTMLButtonElement>) => {
+    setMessagesMenuAnchorEl(e.currentTarget);
+  };
+  const handleMessagesMenuClose = () => {
+    setMessagesMenuAnchorEl(null);
   };
 
   const searchBar = isMobile ? (
@@ -139,9 +210,16 @@ export const DashboardHeader = ({
   const actions = (
     <>
       {searchBar}
-      <IconButton>
-        <Notifications />
-      </IconButton>
+      <Tooltip title="Messages">
+        <IconButton onClick={handleMessagesClick}>
+          <Message />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Notifications">
+        <IconButton onClick={handleNotificationsClick}>
+          <Notifications />
+        </IconButton>
+      </Tooltip>
       <Tooltip title="Change Color Scheme (⌘B)">
         <IconButton onClick={handleColorSchemeClick}>
           {colorScheme === "light" ? (
@@ -153,9 +231,23 @@ export const DashboardHeader = ({
           )}
         </IconButton>
       </Tooltip>
-      <IconButton onClick={handleProfileClick}>
-        <Person />
-      </IconButton>
+      <Tooltip title="Profile">
+        <Avatar
+          component="button"
+          sx={{
+            position: "relative",
+            outline: "none",
+            border: "none",
+            padding: 0,
+            cursor: "pointer",
+          }}
+          src={user?.avatar}
+          variant="rounded"
+          onClick={handleProfileClick}
+        >
+          <Person />
+        </Avatar>
+      </Tooltip>
       <ColorSchemeMenu
         anchorEl={colorSchemeMenuAnchorEL}
         open={!!colorSchemeMenuAnchorEL}
@@ -175,6 +267,32 @@ export const DashboardHeader = ({
             mt: 4,
           },
         }}
+      />
+      <NotificationsMenu
+        anchorEl={notificationsMenuAnchorEl}
+        open={!!notificationsMenuAnchorEl}
+        onClose={handleNotificationsMenuClose}
+        sx={{
+          "& .MuiMenu-paper": {
+            mt: 4,
+          },
+        }}
+        list={notifications}
+        title="Notifications"
+        readAllLink="demo-01/dashboard/notifications"
+      />
+      <NotificationsMenu
+        anchorEl={messagesMenuAnchorEl}
+        open={!!messagesMenuAnchorEl}
+        onClose={handleMessagesMenuClose}
+        sx={{
+          "& .MuiMenu-paper": {
+            mt: 4,
+          },
+        }}
+        list={messages}
+        title="Messages"
+        readAllLink="demo-01/dashboard/messages"
       />
     </>
   );

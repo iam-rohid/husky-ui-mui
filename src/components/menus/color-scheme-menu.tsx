@@ -68,3 +68,5 @@ export const ColorSchemeMenu = ({ ...rest }: ColorSchemeMenuProps) => {
     </Menu>
   );
 };
+
+export default ColorSchemeMenu;

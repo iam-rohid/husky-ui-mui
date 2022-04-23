@@ -59,3 +59,5 @@ export const ProfileMenu = ({ ...rest }: ProfileMenuProps) => {
     </Menu>
   );
 };
+
+export default ProfileMenu;

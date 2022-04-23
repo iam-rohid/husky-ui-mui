@@ -61,7 +61,7 @@ export const getTheme = (mode: PaletteMode) =>
             grey: {
               ...grey,
             },
-            divider: grey[100],
+            divider: grey[200],
             background: {
               default: white,
               paper: white,
